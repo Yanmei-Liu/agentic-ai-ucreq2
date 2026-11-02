@@ -626,7 +626,7 @@ and introduces additional requirements specific to multi-hop delegation chains.
 | B3-7 | The protocol is required to enable a receiving party to detect and reject a delegation chain that contains a cycle, such as a chain in which the receiving party's own identifier already appears. | Authentication, Security |
 | B3-8 | The protocol is required to enable a receiving party to determine that the authority conveyed to it does not exceed the authority conveyed to the hop it received from. | Authentication, Security |
 | B3-9 | The protocol is required to propagate the dialog context across each hop of a delegation chain, so that participants can correlate interactions along the chain. A participant may instead create a new dialog, with a new dialog context, linked to the one it received. | Dialog |
-| B3-10 | The protocol is required to propagate cancellation of a delegated subtask, and termination of a dialog, along the delegation chain, and to report to the party that initiated it whether the cancellation or termination took effect further down the chain. | Dialog |
+| B3-10 | The protocol is required to propagate cancellation of a delegated subtask, and termination of a dialog, along the delegation chain, and to report to the party that initiated it whether the cancellation or termination took effect further down the chain, or that this could not be determined. | Dialog |
 
 ## Cooperative Reasoning and Consensus Formation {#cooperative-reasoning}
 
@@ -816,7 +816,7 @@ capacity at the venue during the concert.
 
 Several requirements in this document concern authorization, delegation, and agent identity (CMN-4, CMN-8, CMN-9, CMN-10, B2-2 to B2-6, B3-1 to B3-4, B3-6, B3-7, B3-8). These are expected to be addressed in the OAuth and WIMSE Working Groups.
 
-Rejecting a dialog change or a resumption when a check fails (CMN-12, B1-7, B1-8) is a requirement for the dialog management protocol. The check itself, verifying identity and authorization, is expected to be addressed in the OAuth and WIMSE Working Groups.
+Rejecting a dialog change or a resumption when a check fails or cannot be completed (CMN-12, B1-7, B1-8) is a requirement for the dialog management protocol. The check itself, verifying identity and authorization, is expected to be addressed in the OAuth and WIMSE Working Groups.
 
 Authorizing an individual action within a task, including when the authorization information is unavailable or may no longer be current, is also expected to be addressed in the OAuth Working Group.
 
