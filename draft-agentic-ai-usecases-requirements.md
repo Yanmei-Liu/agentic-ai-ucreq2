@@ -186,6 +186,9 @@ connections.
 correlate and maintain a dialog. It does not include the content exchanged
 with AI models, such as conversation memory, retrieved documents, or prompts.
 
+**Linked Dialog**: A new dialog, with a new dialog context, that a
+participant creates to continue a dialog it received.
+
 **Task Context**: The data that a participant maintains
 to execute a task, such as conversation history and intermediate
 results. Task context is not carried by the protocol.
@@ -265,14 +268,20 @@ authorization requirements, which map to the OAuth and WIMSE work discussed in
 propagated across the boundary, discussed in {{security}}. The use
 cases are independent of deployment model: they apply whether participants are
 within a single administrative domain or span several, and whether they
-interact directly or through intermediaries.
+interact directly or through intermediaries. Together they cover the
+deployment models in scope: a client application on a user's device and
+an agent ({{simple-single-agent}}), agents hosted by different
+organizations or service providers ({{peer-collaborative}}), and agents
+reached through a mediator such as a network operator's agent gateway
+({{tool-mediation}}).
 
 ## Simple Single-Agent Task {#simple-single-agent}
 
 ### Description
 
 A user submits a task to an AI agent via a client application. The
-agent executes the task by invoking one or more tools and returns
+client application initiates a dialog with the agent, which creates and
+maintains it. The agent executes the task by invoking one or more tools and returns
 results to the user. The tools invoked by the agent may reside in
 the same or a different administrative domain. The agent protocol
 is required to support multiple input and output modalities, and
@@ -281,7 +290,7 @@ modalities are active for the dialog.
 
 This use case covers the protocol interface between the client
 application and the agent. The interaction between the user and
-the client application is out of scope. This use case assumes that
+the client application is out of scope in this use case. This use case assumes that
 the user communicates with the agent via a client application;
 direct communication between a user and an agent without an
 intermediary client application is not covered in this use case.
@@ -353,13 +362,14 @@ interface each applies to.
 | A1-1  | The protocol is required to support incremental streaming of agent output, allowing partial results to be delivered to the client before the agent has completed processing. | App/Agent-to-Agent | Transport |
 | A1-2  | The protocol is required to define a task cancellation message that the client can issue at any point during task execution. | App/Agent-to-Agent | Transport |
 | A1-3  | The protocol is required to define structured error message types that distinguish at minimum: transport failure, tool invocation failure, and agent processing failure. | Both | Transport |
-| A1-4  | The protocol is required to support multiple modalities for both input and output. | App/Agent-to-Agent | Transport |
+| A1-4  | The protocol is required to support multiple modalities for both input and output, including real-time audio and video with low latency. | App/Agent-to-Agent | Transport |
 | A1-5  | The protocol is required to support modality negotiation at dialog establishment, allowing the client and agent to agree on which modalities are active for the dialog. | App/Agent-to-Agent | Dialog, Transport |
 | A1-6  | The protocol is required to support agent-initiated notifications to the client during task execution. | App/Agent-to-Agent | Transport |
 | A1-7  | The protocol is required to support concurrent invocation of multiple tools within a single agent task, where tools may be operated by distinct providers across different administrative domains, each with independent authentication and authorization requirements. | Agent-to-Tool | Transport, Security |
 | A1-8  | The protocol is required to support bulk transfer of large data between communicating parties, applicable to both agent-to-tool and agent-to-agent interactions. | Both | Transport |
 | A1-9 | A delegation mechanism is required to be defined by which an agent presents to a tool provider a credential attesting the authorization for the requested tool access, without exposing the client's primary credentials. | Agent-to-Tool | Authentication |
 | A1-10 | The protocol is required to preserve the dialog context when a participant transforms data from one modality to another, such as audio to text. | App/Agent-to-Agent | Dialog |
+| A1-11 | The protocol is required to allow the user to continue a dialog from the same client application on another device. | App/Agent-to-Agent | Dialog |
 
 ## Orchestrator and Agent Collaboration {#orchestrator-agent}
 
@@ -876,7 +886,7 @@ This document has no IANA actions.
 # Acknowledgements
 {:numbered="false"}
 
-Thanks to Borislava Gajic, Julien Maisonneuve, Parisa Foroughi, Laurent Ciavaglia, Nathalie Romo Moreno, Peter Leis, Linda Dunbar, Mikhail Sergeev, Iman Schrock, Sumit Ahuja, Sina Khatibi, Vaishnavi Gudur, Lars Kersten Kroehl, Girish Konda, Nikhil Donapati, Nicholas Templeman, Bradley B, and Douglas Wadkins for the discussions and comments.
+Thanks to Borislava Gajic, Julien Maisonneuve, Parisa Foroughi, Laurent Ciavaglia, Nathalie Romo Moreno, Peter Leis, Linda Dunbar, Mikhail Sergeev, Iman Schrock, Sumit Ahuja, Sina Khatibi, Vaishnavi Gudur, Lars Kersten Kroehl, Girish Konda, Nikhil Donapati, Nicholas Templeman, Bradley B, Douglas Wadkins, and Lionel Morand for the discussions and comments.
 
 The examples in {{simple-single-agent}} and {{authz-checkpoint}} are
 based on scenarios in draft-rosenberg-agentproto-usecases by Jonathan
