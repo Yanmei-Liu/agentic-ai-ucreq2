@@ -218,55 +218,6 @@ correlate the requests it receives with the requests it forwards.
 Neither function requires access to the task context. Each participant
 can use the dialog identifier to retrieve its own task context.
 
-# Deployment Models {#deployment-models}
-
-This section describes the deployment models in which the agents of
-{{usecases}} can be realized. The models are not exclusive. None of the
-requirements in this document assume a particular model.
-
-## Agent Deployment Models {#agent-deployment-models}
-
-**User-terminal deployment**: The agent executes on a device controlled
-by the user (laptop, smartphone, vehicle, or any other endpoint) and
-initiates dialogs with other agents and tools on behalf of the user.
-Connections from a user-terminal agent are subject to intermittent
-connectivity, address reassignment after roaming between access
-networks, and power constraints on long-lived connections.
-
-**Organization-hosted deployment**: The agent executes within an
-organization's infrastructure and acts on behalf of that organization
-or its members. Authorization of the agent is typically anchored in
-credentials issued by the organization.
-
-**Third-party service deployment**: The agent executes on
-infrastructure operated by a third party and is authorized to act on
-behalf of a user or an organization through delegated authorization,
-commonly OAuth-based delegation ({{relationship-oauth-wimse}}).
-
-**Network-operator deployment**: The agent executes in a network
-operator's domain, or agent functions of the network are reached
-through an operator-controlled agent gateway, as described for 6G
-networks in [TR23801-01]. Agents outside the operator network reach
-network agents and functions only through the gateway, as described in
-{{tool-mediation}}.
-
-## Mediation Topologies {#mediation-topologies}
-
-Independent of where agents are deployed, dialogs between them are
-realized in one of the following topologies:
-
-- **Direct**: The dialog participants connect to each other without an
-  intermediary.
-- **Proxy**: An intermediary forwards dialog messages without
-  terminating the dialog. The dialog endpoints may or may not be aware
-  of the proxy.
-- **Gateway**: An intermediary terminates the dialog on one
-  side and establishes a linked dialog on the other side (B3-9). The
-  intermediary authenticates separately to each side.
-
-A mediator ({{tool-mediation}}) can act as a proxy or as a gateway. The
-topologies above apply to dialogs in every deployment model.
-
 # Common Protocol Requirements {#common-requirements}
 
 The following baseline requirements apply to both agent-to-agent and agent-to-tool protocol interactions across all use cases and are not repeated per use case.
@@ -315,9 +266,14 @@ these use cases. Crossing an administrative boundary adds authentication and
 authorization requirements, which map to the OAuth and WIMSE work discussed in
 {{relationship-oauth-wimse}}, and privacy requirements on dialog context
 propagated across the boundary, discussed in {{security}}. The use
-cases are independent of deployment model ({{deployment-models}}): they apply whether participants are
+cases are independent of deployment model: they apply whether participants are
 within a single administrative domain or span several, and whether they
-interact directly or through intermediaries.
+interact directly or through intermediaries. Together they cover the
+deployment models in scope: a client application on a user's device and
+an agent ({{simple-single-agent}}), agents hosted by different
+organizations or service providers ({{peer-collaborative}}), and agents
+reached through a mediator such as a network operator's agent gateway
+({{tool-mediation}}).
 
 ## Simple Single-Agent Task {#simple-single-agent}
 
