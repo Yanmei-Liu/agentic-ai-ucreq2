@@ -241,7 +241,7 @@ Each per-use-case requirement is tagged with one or more of the following protoc
 | CMN-8  | The protocol is required to provide a means to verify the agent authentication credentials validity used by agents at the time of use. | Authentication |
 | CMN-9 | The protocol is required to support signaling that a presented credential has been revoked or is otherwise invalid. | Security |
 | CMN-10 | The protocol is required to support revoking a previously granted authorization, including propagating the revocation across a delegation chain so that affected agents cease to act under it. | Security |
-| CMN-11 | The protocol is required to support establishment, modification, and termination of a dialog, distinct from cancellation of a delegated subtask within the dialog. Modification includes changes to the participants, modalities, or lifetime of the dialog. The protocol is required to support a dialog lifetime, after which the dialog is terminated. | Dialog |
+| CMN-11 | The protocol is required to support establishment, modification, and termination of a dialog, distinct from cancellation of a delegated subtask within the dialog. Modification includes changes to the modalities or lifetime of the dialog. The protocol is required to support a dialog lifetime, after which the dialog is terminated. | Dialog |
 | CMN-12 | Before accepting a change to a dialog, a participant is required to be able to verify that the change is authorized at that time. If this check fails or cannot be completed, the participant is required to reject the change and signal the reason. It is required to be able to determine which of the two cases occurred. | Dialog, Security |
 
 ## Network-Layer Assumptions {#network-assumptions}
@@ -709,27 +709,18 @@ ranking agent that ranks them.
         +------------+ +------------+ +---------+
 ~~~
 
-1. The supervisor establishes a dialog with the agents and distributes
-   the research goal to them (B4-1).
+1. The supervisor establishes a separate dialog with each agent and
+   sends it the research goal.
 
 2. The generation agents propose hypotheses independently.
 
 3. The reflection agent reviews each hypothesis, and the ranking agent
    ranks them. The supervisor shares the results with all agents for
-   the next round (B4-1).
+   the next round.
 
 4. After several rounds, the supervisor returns the top-ranked
    hypotheses to the research team and terminates the dialog
    (CMN-11).
-
-### Additional Protocol Requirements {#b4-protocol-requirements}
-
-This use case builds on the requirements defined for {{orchestrator-agent}}
-and introduces additional requirements specific to group message delivery.
-
-| REQ-ID | Description | Tag |
-|--------|-------------|-----|
-| B4-1  | The protocol is required to support one-to-one, one-to-many, and many-to-many message delivery among a defined group of agents. Group membership is required to be dynamic, allowing agents to join or leave the group during the course of an exchange. | Transport, Security |
 
 ## Tool, Data, and API Mediation Between Agents {#tool-mediation}
 
