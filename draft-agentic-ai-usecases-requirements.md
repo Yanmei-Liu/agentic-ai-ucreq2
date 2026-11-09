@@ -994,15 +994,14 @@ Signaled error reasons help a participant decide on the right course
 of action to address the error. They need to be precise enough for
 that, but not reveal information that an attacker could use.
 
-Continuous audio, video, and environmental observations in
-{{live-interaction}} can reveal information about the user and
-bystanders. Application use of existing authorization mechanisms needs
-to distinguish consuming a source, receiving private output, and
-invoking a controller operation, including applicable duration and the
-effect of revocation on active flows and operations. Possession of a
-dialog or source identifier does not establish such permission.
-Persistent identifiers and detailed capability reports can increase
-linkability; disclosure should be limited to what is needed.
+The confidentiality and integrity protection required by CMN-3 applies
+to the signaling and data flows used in {{live-interaction}}.
+Within that protected communication, applications need to use existing
+authorization mechanisms to determine which parties may consume input
+from a source, receive private output, or invoke a controller operation.
+The applicable authorization scope and duration, and the effect of
+revocation on active flows and operations, need to be defined. A dialog
+or source identifier does not by itself confer authorization.
 
 Forged associations can direct observations to the wrong dialog or
 recipient. Replayed controls or delayed updates can affect a current
