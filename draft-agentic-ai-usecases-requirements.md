@@ -370,8 +370,8 @@ it without starting over.
 
 #### Live Interaction with Changing Sources and Devices {#live-interaction}
 
-A user receives assistance with an ongoing task through a client
-application. The client sends observations while the agent returns
+A user asks an agent to explain an object shown by a camera through a
+client application. The client sends observations while the agent returns
 speech, text, or visual annotations, and tools may continue working
 while the user provides further instructions. Observation sources,
 responses, and delegated operations can change independently within
@@ -415,7 +415,9 @@ continue on the phone, changing the active source and authorized output
 recipient. Delayed data or reconnection of the glasses does not by
 itself restore their former role or permissions. If devices host
 separate clients, the application distinguishes an authorized
-participant change from a source change within one client.
+participant change from a source change within one client. A change
+of source or output represented by the phone client is distinct from
+the client itself continuing on another device under A1-11.
 Battery or connectivity constraints can reduce source availability
 without requiring detailed device telemetry on the protocol interface.
 
@@ -458,28 +460,34 @@ A1-1, A1-4, and A1-5 provide the streaming and modality basis. CMN-11
 and CMN-12 provide dialog lifecycle and authorized modification;
 A1-11 covers continuation by the same client application on another
 device. A1-2, B1-5, and B3-10 provide task cancellation and its
-propagation. B1-6 through B1-8 provide dialog resumption and its checks.
-These capabilities are inherited rather than repeated as new
+propagation. B1-6 through B1-8 provide dialog resumption and its checks;
+{{orchestrator-agent}} describes the handling of uncertain operation
+outcomes. These capabilities are inherited rather than repeated as new
 requirements for real-time media.
 
-The additional outcomes below concern the application protocol or
-profile used for live interaction. A binding and its application
-integration associate dialog context with application signaling and
-data flows, using the existing correlation requirements, including
-A1-10, B3-9, and B5-3 where applicable. The table does not assign source,
-response, observation, or model state to the common dialog context.
-Existing protocol mechanisms are to be reused where they provide the
-required semantics; changes to those protocols remain with their
-respective maintainers.
+The refinements below concern the application protocol or profile used
+for live interaction. A binding and its application integration
+associate dialog context with application signaling and data flows,
+using the existing correlation requirements, including A1-10, B3-9,
+and B5-3 where applicable. The Responsibility column identifies which
+layer supplies the required semantics. Source, response, observation,
+and model state remain outside the common dialog context. Existing
+protocol mechanisms are to be reused where they provide the required
+semantics; changes to those protocols remain with their respective
+maintainers.
 
 | REQ-ID | Description | Responsibility | Tag |
 |--------|-------------|----------------|-----|
-| LIVE-1 | Where delayed data could be confused with current input or output, the application protocol or profile is required to distinguish the applicable source instance or exchange and associate output with its declared input observations or range. It is required to preserve the necessary relationships through relevant transformations, replacements, and source restarts. | Application/profile; binding for dialog association | Dialog, Transport |
-| LIVE-2 | For supported response controls, the application protocol or profile is required to identify the target and intended effect, distinguishing response generation and output consumption from task cancellation and dialog termination. It is required to distinguish acceptance from effect, expose failure or unresolved outcomes, and define completion races and the treatment of late or superseded output. | Application/profile | Transport |
-| LIVE-3 | The application protocol or profile is required to distinguish source capability, current availability, and permission. Changes are required to have a determinable scope, outcome, and applicability to subsequent exchanges, including fallback or failure when no acceptable mode remains. A capture pause need not modify the dialog's agreed modalities. | Application/profile; existing dialog modification where applicable | Dialog, Transport, Security |
-| LIVE-4 | The application protocol or profile is required to make unavailable or unknown observation state explicit, without inferring a cause solely from missing media. It is required to define when last-known state becomes stale and how repeated or delayed updates are handled. A continuing dialog or connection does not by itself make a cached observation current. | Application/profile | Transport |
-| LIVE-5 | The application protocol or profile is required to distinguish connection state, participant changes, and changes among devices or sources represented by one client. It is required to establish the applicable input sources and authorized output recipients after a change; delayed data or device reconnection does not by itself reinstate an earlier role or permission. | Application/profile; existing dialog lifecycle and authorization | Dialog, Security |
-| LIVE-6 | After dialog resumption, the application protocol or profile is required to reconcile applicable sources, modalities, output recipients, response-control associations, and unfinished operations. Unresolved outcomes remain explicit. Resumption alone does not authorize an operation retry, source reactivation, or reuse of a retired control association or authorization. | Application/profile; existing dialog resumption and authorization | Dialog, Transport, Security |
+| LIVE-1 | Where delayed data could be confused with current input or output, the application protocol or profile is required to distinguish the applicable source instance or exchange and associate relevant output with the observations or observation range to which it refers. The necessary associations are required to remain determinable through relevant transformations, source replacements, and restarts. | Application/profile; binding for dialog association | Dialog, Transport |
+| LIVE-2 | For supported response controls, the application protocol or profile is required to identify the target and intended effect, distinguishing control of response generation or output delivery from task cancellation and dialog termination. It is required to distinguish acceptance from effect, expose failed or unresolved outcomes, and define the treatment of completion races and late or superseded output. | Application/profile; existing task cancellation where applicable | Transport |
+| LIVE-3 | The application protocol or profile is required to distinguish source capability, current availability, and permission, and make unavailable or unknown observation state explicit. Signaled changes are required to have a determinable scope, outcome, and applicability to subsequent exchanges, including fallback or failure when no acceptable mode remains. The profile is required to define when last-known observations cease to be treated as current and how repeated or delayed updates are handled. Missing media alone does not establish the cause of unavailability. Continued dialog or connection activity does not by itself make an earlier observation current. A capture pause need not modify the dialog's agreed modalities. | Application/profile; existing dialog modification and authorization where applicable | Dialog, Transport, Security |
+| LIVE-4 | The application protocol or profile is required to distinguish connection state, participant changes, and changes among devices or sources represented by one client. It is required to establish the applicable input sources and authorized output recipients after a change; a continuing connection, delayed data, or device reconnection does not by itself reinstate an earlier role or permission. | Application/profile; existing dialog lifecycle and authorization | Dialog, Security |
+| LIVE-5 | After dialog resumption, the application protocol or profile is required to reconcile applicable sources, modalities, output recipients, response-control associations, and unfinished operations. Unresolved state and operation outcomes are required to remain explicit; uncertain operations are handled as described in {{orchestrator-agent}}. Resumption alone does not authorize an operation retry, source reactivation, or reuse of retired control associations or permissions. | Application/profile; existing dialog resumption and authorization | Dialog, Transport, Security |
+
+A response represented as a task uses the existing cancellation and
+outcome-reporting mechanisms. LIVE-2 specifies the scope and effects of
+response controls supported by the application; it does not require a
+separate task cancellation mechanism or prescribe local playback behavior.
 
 The profile defines its supported controls and the interpretation of
 time references and discontinuities. An input association can cover
